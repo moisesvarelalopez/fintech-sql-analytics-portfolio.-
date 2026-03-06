@@ -10,30 +10,25 @@ This portfolio demonstrates a comprehensive understanding of how data moves from
 
 ```mermaid
 graph TD
-    subgraph "1. Data Sources (Simulated)"
-        A[Mobile App Events] --> |JSON / API| C(Raw Data Lake)
-        B[Core Banking / Ledgers] --> |PostgreSQL| C
-        E[External Payment Gateways] --> |Webhooks| C
-    end
+    %% 1. Data Sources
+    A[Mobile App Events] --> C(Raw Data Lake)
+    B[Core Banking / Ledgers] --> C
+    E[External Payment Gateways] --> C
 
-    subgraph "2. Data Engineering & Cleansing"
-        C -->|00_data_cleaning.sql| D{Data Warehouse}
-        D --> |De-duplication| D
-        D --> |NULL Handling| D
-    end
-
-    subgraph "3. Analytics Engine (This Portfolio)"
-        D -->|01-financial-core| F[Revenue & Reconciliation]
-        D -->|02-risk-management| G[Fraud & AML Detection]
-        D -->|03-business-growth| H[Scoring & Retention]
-    end
-
-    subgraph "4. Business Impact"
-        F --> I((Finance Team))
-        G --> J((Compliance Team))
-        H --> K((Product/Marketing))
-    end
+    %% 2. Data Engineering
+    C -->|00_data_cleaning.sql| D{Data Warehouse}
     
+    %% 3. Analytics Engine Core
+    D --> F[01: Financial Core]
+    D --> G[02: Risk & AML]
+    D --> H[03: Business Growth]
+
+    %% 4. Business Impact
+    F --> I((Finance Team))
+    G --> J((Compliance Team))
+    H --> K((Product / Marketing))
+    
+    %% Styling
     style C fill:#f9f,stroke:#333,stroke-width:2px
     style D fill:#bbf,stroke:#333,stroke-width:4px
     style F fill:#dfd,stroke:#333
