@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:15
+    container_name: ansi_sql_practice_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: bank_practice
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bank_practice"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  data-loader:
+    build: ./data-loader
+    container_name: ansi_sql_data_loader
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:password123@postgres-db:5432/bank_practice
+
+volumes:
+  pgdata:
